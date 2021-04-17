@@ -41,13 +41,8 @@ DATA_SEG equ gdt_data - gdt_start
 bits 32
 
 boot2:
-    call fizzbuzz
-    lodsb
-    or al,al
-    cli
-    hlt
 
-fizzbuzz:
+.fizzbuzz:
     push    ebp
     push    ebx
     push    edi
@@ -116,7 +111,11 @@ fizzbuzz:
     pop     edi
     pop     ebx
     pop     ebp
-    ret
+.halt:
+    lodsb
+    or al,al
+    cli
+    hlt
 
 times 510 - ($-$$) db 0
 dw 0xaa55
