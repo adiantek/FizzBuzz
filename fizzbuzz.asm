@@ -51,7 +51,7 @@ boot2:
     inc     eax
     mov     ecx, 0xB8000
     mov     edi, 255
-.LBB0_1:
+.for_1_to_100:
     mov     edx, eax
     and     edx, edi
     imul    esi, edx, 205
@@ -64,15 +64,15 @@ boot2:
     mov     ebx, eax
     sub     ebx, ebp
     add     dl, al
-    je      .LBB0_2
+    je      .if_fizz
     test    bl, bl
-    je      .LBB0_4
+    je      .if_buzz
     and     esi, -2
     lea     ebx, [esi + 4*esi]
     neg     ebx
     and     ebx, edi
     cmp     eax, 11
-    jb      .LBB0_7
+    jb      .if_greater_than_ten
     movzx   edx, al
     imul    edx, edx, 205
     shr     edx, 11
@@ -80,33 +80,33 @@ boot2:
     mov     byte [ecx], dl
     mov     byte [ecx + 1], 15
     add     ecx, 2
-.LBB0_7:
+.if_greater_than_ten:
     add     ebx, eax
     or      bl, 48
     lea     esi, [ecx + 1]
     mov     byte [ecx], bl
     add     ecx, 2
-    jmp     .LBB0_8
-.LBB0_2:
+    jmp     .magic_with_end
+.if_fizz:
     mov     dword [ecx], 0x0F690F66
     mov     dword [ecx + 4], 0x0F7A0F7A
     add     ecx, 8
     test    bl, bl
-    jne     .LBB0_9
-.LBB0_4:
+    jne     .end_of_iteration
+.if_buzz:
     mov     dword [ecx], 0x0F750F62
     mov     word [ecx + 4], 0x0F7A
     lea     esi, [ecx + 7]
     mov     byte [ecx + 6], 122
     add     ecx, 8
-.LBB0_8:
+.magic_with_end:
     mov     byte [esi], 15
-.LBB0_9:
+.end_of_iteration:
     mov     word [ecx], 0x0F20
     add     ecx, 2
     inc     eax
     cmp     eax, 101
-    jne     .LBB0_1
+    jne     .for_1_to_100
     pop     esi
     pop     edi
     pop     ebx
